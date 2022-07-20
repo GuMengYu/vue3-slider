@@ -206,33 +206,37 @@ export default defineComponent({
             : `translate(${tooltipOffset}px)`,
           right: flip ? '0px' : undefined,
           left: flip ? 'auto' : undefined,
-          '--tooltip-margin': `max(calc(var(--height, 6px) + 12px), calc(var(--height, 6px) * ${
+          '--tooltip-margin': `max(calc(var(--height, 6px) + 20px), calc(var(--height, 6px) * ${
             applyHandleHoverClass ? 'var(--handle-scale, 1.35)' : '1.35'
           }))`,
           bottom: flipTooltip ? 'unset' : 'var(--tooltip-margin)',
           top: flipTooltip ? 'var(--tooltip-margin)' : 'unset',
         }"
+        :class="flipTooltip ? 'bottom' : 'top'"
       >
         {{ tooltipText }}
       </div>
     </transition>
+    <div class="slider-rail">
+      <div class="track" />
+      <div
+        class="track-filled"
+        :style="{
+          width: filledWidth + 'px',
+          right: flip ? '0px' : undefined,
+          left: flip ? 'auto' : undefined,
+        }"
+      />
+      <div
+        class="handle"
+        :style="{
+          [flip ? 'right' : 'left']: filledWidth - (height * 1.35) / 2 + 'px',
+        }"
+        :class="{ hover: applyHandleHoverClass && !disabled }"
+      />
+    </div>
 
-    <div class="track" />
-    <div
-      class="track-filled"
-      :style="{
-        width: filledWidth + 'px',
-        right: flip ? '0px' : undefined,
-        left: flip ? 'auto' : undefined,
-      }"
-    />
-    <div
-      class="handle"
-      :style="{
-        [flip ? 'right' : 'left']: filledWidth - (height * 1.35) / 2 + 'px',
-      }"
-      :class="{ hover: applyHandleHoverClass && !disabled }"
-    />
+ 
   </div>
 
   <div
@@ -397,14 +401,17 @@ export default defineComponent({
 .vue3-slider {
   box-sizing: border-box;
   width: var(--width, 100%);
-  height: var(--height, 6px);
   position: relative;
-  margin: 3px 0;
+  padding: 10px 0;
   cursor: pointer;
   font-family: inherit;
 
   &[disabled] {
     cursor: unset;
+  }
+  .slider-rail {
+    height: var(--height, 6px);
+    position: relative;
   }
 
   &.vertical {
@@ -493,6 +500,31 @@ export default defineComponent({
     display: flex;
     align-items: center;
     transition: bottom 0.3s ease, left 0.3s ease, top 0.3s ease, right 0.3s ease;
+    &::after {
+      content: "";
+      border-color: transparent;
+      border-style: solid;
+      border-width: 5px;
+      left: 50%;
+      transform: translate(-50%);
+      height: 0;
+      width: 0;
+      position: absolute;
+    }
+    &.bottom {
+      &::after {
+        bottom: 100%;
+        border-bottom-color: var(--tooltip-color);
+     
+      }
+    }
+    &.top {
+      &::after {
+        content: "";
+        top: 100%;
+        border-top-color: var(--tooltip-color);
+      }
+    }
   }
 
   .track {
@@ -525,7 +557,7 @@ export default defineComponent({
     user-select: none;
 
     &.hover {
-      transform: scale(var(--handle-scale, 1.35));
+      transform: scale(var(--handle-scale, 5));
     }
   }
 }

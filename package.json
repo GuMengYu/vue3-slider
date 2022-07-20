@@ -33,12 +33,6 @@
   "private": false,
   "main": "dist/vue3-slider.common.js",
   "types": "vue3-slider.d.ts",
-  "files": [
-    "dist/*",
-    "vue3-slider.d.ts",
-    "src/**/*.vue",
-    "*.json"
-  ],
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.ts",
     "serve:prod": "vue-cli-service serve dev-production-build/serve.ts",
