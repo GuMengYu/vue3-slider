@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+// @ts-ignore
 import Vue3Slider from "../dist/vue3-slider.common";
 
 export default defineComponent({
